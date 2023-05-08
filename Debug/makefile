@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS
+CG_TOOL_ROOT := C:/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.4.LTS
 
 GEN_OPTS__FLAG := --cmd_file="configPkg/compiler.opt"
 GEN_CMDS__FLAG := -l"configPkg/linker.cmd"
@@ -179,7 +179,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS/bin/armcl" --cmd_file="C:/Users/henry/workspace_v9/simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs/Tools/Defines/simple_central_app.opt" --cmd_file="C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source/ti/ble5stack/config/build_components.opt" --cmd_file="C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source/ti/ble5stack/config/factory_config.opt" --cmd_file="C:/Users/henry/workspace_v9/simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs/build_config.opt"  -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O4 --opt_for_speed=0 --define=DeviceFamily_CC26X2 -g --c99 --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.map" -i"C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source" -i"C:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS/lib" --reread_libs --define=FLASH_ROM_BUILD=2 --diag_suppress=16002-D --diag_suppress=10247-D --diag_suppress=10325-D --diag_suppress=10229-D --diag_suppress=16032-D --diag_wrap=off --display_error_number --warn_sections --xml_link_info="simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs_linkInfo.xml" --rom_model -o "simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out" $(ORDERED_OBJS)
+	"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.4.LTS/bin/armcl" --cmd_file="C:/Users/henry/workspace_v9/simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs/Tools/Defines/simple_central_app.opt" --cmd_file="C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source/ti/ble5stack/config/build_components.opt" --cmd_file="C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source/ti/ble5stack/config/factory_config.opt" --cmd_file="C:/Users/henry/workspace_v9/simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs/build_config.opt"  -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me -O4 --opt_for_speed=0 --define=DeviceFamily_CC26X2 -g --c99 --gcc --diag_warning=225 --diag_warning=255 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.map" -i"C:/ti/simplelink_cc13x2_26x2_sdk_3_20_00_68/source" -i"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.4.LTS/lib" --reread_libs --define=FLASH_ROM_BUILD=2 --diag_suppress=16002-D --diag_suppress=10247-D --diag_suppress=10325-D --diag_suppress=10229-D --diag_suppress=16032-D --diag_wrap=off --display_error_number --warn_sections --xml_link_info="simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs_linkInfo.xml" --rom_model -o "simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -187,7 +187,7 @@ simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out: $(OBJS) $(CMD_SRCS) $(GEN_C
 simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: ARM Hex Utility'
-	"C:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS/bin/armhex"  -o "simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.hex" $(EXE_OUTPUTS__QUOTED)
+	"C:/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.4.LTS/bin/armhex"  -o "simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 	@$(MAKE) --no-print-directory post-build
@@ -202,7 +202,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-C:/ti/ccs910/ccs/tools/compiler/ti-cgt-arm_18.12.3.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.hex simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out
+	-C:/ti/ccs930/ccs/tools/compiler/ti-cgt-arm_18.12.4.LTS/bin/armhex -order MS --memwidth=8 --romwidth=8 --intel -o simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.hex simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs.out
 	-@echo ' '
 
 .PHONY: all clean dependents

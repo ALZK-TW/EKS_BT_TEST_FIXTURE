@@ -872,6 +872,7 @@ static uint8_t SimpleCentral_processStackMsg(ICall_Hdr *pMsg)
 
   return (safeToDealloc);
 }
+static int32_t rssiAvg = 0;
 
 /*********************************************************************
  * @fn      SimpleCentral_processAppMsg
@@ -903,8 +904,8 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
       {
           Display_print1(dispHandle, 4, 0, "ScanResponseAddr: %s",
                          Util_convertBdAddr2Str(pAdvRpt->addr));
-          Display_print1(dispHandle, 5, 0, "ScanResponseData: %s",
-                         Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
+//          Display_print1(dispHandle, 5, 0, "ScanResponseData: %s",
+//                         Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
       }
       else
       {
@@ -912,7 +913,7 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 //                         Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //          Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
 //                         , Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
-          if (30 == pAdvRpt->dataLen && !memcmp(lockOpSvcUUID, pAdvRpt->pData + 14, 16)) {
+          if (23 == pAdvRpt->dataLen && !memcmp("EKS", pAdvRpt->pData + 2, 3)) {
 //              Display_print2(dispHandle, 6, 0, "Advertising Addr: %s RSSI: %d",
 //                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //              Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
@@ -921,7 +922,23 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 //                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //              Display_print1(dispHandle, 7, 0, "Advertising Data: %s",
 //                             Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
-              Display_print1(dispHandle, 6, 0, "RSSI: %d", pAdvRpt->rssi);
+              Display_print1(dispHandle, 6, 0, "EKS RSSI: %d", pAdvRpt->rssi);
+              rssiAvg = (0 < pAdvRpt->rssi) ? rssiAvg + pAdvRpt->rssi : rssiAvg - pAdvRpt->rssi;
+              toggle = !toggle;
+              PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, toggle);
+              PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !toggle);
+              receivedTimes++;
+          } else if (30 == pAdvRpt->dataLen && 0x66 == pAdvRpt->pData[9] && 0x1C == pAdvRpt->pData[10]) {
+//              Display_print2(dispHandle, 6, 0, "Advertising Addr: %s RSSI: %d",
+//                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
+//              Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
+//                             , advData);
+//              Display_print2(dispHandle, 6, 0, "Advertising Addr: %s RSSI: %d",
+//                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
+//              Display_print1(dispHandle, 7, 0, "Advertising Data: %s",
+//                             Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
+              Display_print1(dispHandle, 6, 0, "iBeacon RSSI: %d", pAdvRpt->rssi);
+              rssiAvg = (0 < pAdvRpt->rssi) ? rssiAvg + pAdvRpt->rssi : rssiAvg - pAdvRpt->rssi;
               toggle = !toggle;
               PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, toggle);
               PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !toggle);
@@ -995,10 +1012,10 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 
 	      numReport = ((GapScan_Evt_End_t*) (pMsg->pData))->numReport;
 #endif // DEFAULT_DEV_DISC_BY_SVC_UUID
-
-	      Display_printf(dispHandle, SC_ROW_NON_CONN, 0,
-	                     "%d times", receivedTimes);
-	      int pass = (190 <= receivedTimes);
+	      rssiAvg = rssiAvg / receivedTimes;
+          Display_printf(dispHandle, 7, 0,
+                         "Scanned %d times; Average RSSI: -%d", receivedTimes, rssiAvg);
+	      int pass = ((190 <= receivedTimes) && 60 >= rssiAvg);
           PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, pass);
           PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !pass);
 
