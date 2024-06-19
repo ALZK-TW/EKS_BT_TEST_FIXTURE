@@ -913,7 +913,9 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 //                         Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //          Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
 //                         , Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
-          if (23 == pAdvRpt->dataLen && !memcmp("EKS", pAdvRpt->pData + 2, 3)) {
+          if (28 == pAdvRpt->dataLen && !memcmp("EKS", pAdvRpt->pData + 2, 3)) {
+              //Byte 24: Value:1-byte device type (0x00: D1) (0x01: D2) (0x02: I1) (0x03: I2) (0x04: L1) (0x05: W1) (0x06: Door Read)
+              if (0 == (pAdvRpt->pData[24])) {
 //              Display_print2(dispHandle, 6, 0, "Advertising Addr: %s RSSI: %d",
 //                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //              Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
@@ -922,13 +924,15 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 //                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //              Display_print1(dispHandle, 7, 0, "Advertising Data: %s",
 //                             Util_convertBytes2Str(pAdvRpt->pData, pAdvRpt->dataLen));
-              Display_print1(dispHandle, 6, 0, "EKS RSSI: %d", pAdvRpt->rssi);
+              Display_print1(dispHandle, 6, 0, "EKS(Adv. length 28 Type:D1) RSSI: %d", pAdvRpt->rssi);
               rssiAvg = (0 < pAdvRpt->rssi) ? rssiAvg + pAdvRpt->rssi : rssiAvg - pAdvRpt->rssi;
               toggle = !toggle;
               PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, toggle);
               PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !toggle);
               receivedTimes++;
-          } else if (30 == pAdvRpt->dataLen && 0x66 == pAdvRpt->pData[9] && 0x1C == pAdvRpt->pData[10]) {
+              }
+          }
+          /*else if (30 == pAdvRpt->dataLen && 0x66 == pAdvRpt->pData[9] && 0x1C == pAdvRpt->pData[10]) {
 //              Display_print2(dispHandle, 6, 0, "Advertising Addr: %s RSSI: %d",
 //                             Util_convertBdAddr2Str(pAdvRpt->addr), pAdvRpt->rssi);
 //              Display_print2(dispHandle, 7, 0, "Advertising Data(%d): %s", pAdvRpt->dataLen
@@ -943,7 +947,7 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
               PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, toggle);
               PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !toggle);
               receivedTimes++;
-          }
+          }*/
       }
   // === END SOLUTION [Print scan results] ===
 #if (DEFAULT_DEV_DISC_BY_SVC_UUID == TRUE)
@@ -1014,8 +1018,8 @@ static void SimpleCentral_processAppMsg(scEvt_t *pMsg)
 #endif // DEFAULT_DEV_DISC_BY_SVC_UUID
 	      rssiAvg = rssiAvg / receivedTimes;
           Display_printf(dispHandle, 7, 0,
-                         "Scanned %d times; Average RSSI: -%d", receivedTimes, rssiAvg);
-	      int pass = ((190 <= receivedTimes) && 60 >= rssiAvg);
+                         "Scanned [%d]/[98] times; Average RSSI: [-%d]/[-60]", receivedTimes, rssiAvg);
+	      int pass = ((98 <= receivedTimes) && 60 >= rssiAvg);
           PIN_setOutputValue(ledPinsHandle, Board_PIN_GLED, pass);
           PIN_setOutputValue(ledPinsHandle, Board_PIN_RLED, !pass);
 
