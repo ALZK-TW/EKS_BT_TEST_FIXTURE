@@ -1,0 +1,5 @@
+C:\Users\henry\workspace_v9\simple_central_app_CC26X2R1_LAUNCHXL_tirtos_ccs
+
+Must used CCS9 to constructed image.
+
+!!Just flash 1 hex file.
